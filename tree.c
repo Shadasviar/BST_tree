@@ -17,5 +17,6 @@ int main(){
     }
 
     print_values_in_deep(head);
+		printf(" num of leafs: %d\n", num_of_leafs(head));
 	return 0;
 }

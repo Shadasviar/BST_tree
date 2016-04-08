@@ -1,9 +1,5 @@
 #pragma once
 
-/*If you want to add the new childtype to tree, add name of it before
- *"parent", in other way you will catch undefined behavior
- *
- * */
 
 typedef enum {left_child, right_child, parent, last} node_name;
 
@@ -21,5 +17,6 @@ int delete_node(node*);
 double get_value(node*);
 int num_of_children(node*);
 int add_leaf_in_BST_order(node*, double value);
+int num_of_leafs(node*);
 
 void print_values_in_deep(node*);

@@ -3,20 +3,21 @@
 
 CC = gcc
 CFLAGS = -g -Wall -std=c11
-OBJECTS = Tree.o binary_tree.o
+OBJECTS = $(SOURCES:.c=.o)
+SOURCES = tree.c binary_tree.c
 INCFLAGS = 
 LDFLAGS = -Wl,-rpath,/usr/local/lib, -lm
 LIBS = 
 
-all: Tree
+all: $(SOURCES) tree
 
-Tree: $(OBJECTS)
-	$(CC) -o Tree $(OBJECTS) -L $(LDFLAGS) $(LIBS)
+tree: $(OBJECTS)
+	$(CC) -o tree $(OBJECTS) -L $(LDFLAGS) $(LIBS)
 
 .SUFFIXES:
 .SUFFIXES:	.c .cc .C .cpp .o
 
-.c.o :
+.c.o : $(SOURCES)
 	$(CC) -o $@ -c $(CFLAGS) $< $(INCFLAGS)
 
 count:

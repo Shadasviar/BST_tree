@@ -5,7 +5,12 @@
 #include <math.h>
 
 
-void print_node_value(node*);
+int print_node_value(node*);
+
+
+/*
+ *Start of realization of the interface
+ -----------------------------------------------------------------------------*/
 
 
 node* create_node(double value){
@@ -80,9 +85,13 @@ void print_values_in_deep(node *in_node){
 
   else
 	if(in_node){
-    if(in_node->family[left_child]) print_values_in_deep(in_node->family[left_child]);
+    if(in_node->family[left_child]){
+			print_values_in_deep(in_node->family[left_child]);
+		}
     print_node_value(in_node);
-    if(in_node->family[right_child]) print_values_in_deep(in_node->family[right_child]);
+    if(in_node->family[right_child]){
+			print_values_in_deep(in_node->family[right_child]);
+		}
   }
 
 	else ;
@@ -115,6 +124,33 @@ int add_leaf_in_BST_order(node *in_node, double value){
 }
 
 
-void print_node_value(node *in_node){
-  printf("%.2lf \n", get_value(in_node));
+int num_of_leafs(node *in_node){
+	int result = 0;
+
+	if(in_node && num_of_children(in_node) == 0) ++result;
+  else
+	if(in_node){
+    if(in_node->family[left_child]){
+			result += num_of_leafs(in_node->family[left_child]);
+		}
+    if(in_node->family[right_child]){
+			result += num_of_leafs(in_node->family[right_child]);
+		}
+  }
+
+	else ;
+
+	return result;
+
+}
+
+
+
+/*
+ * End of realization of the interface
+ -----------------------------------------------------------------------------*/
+
+
+int print_node_value(node *in_node){
+  return printf("%.2lf \n", get_value(in_node));
 }
