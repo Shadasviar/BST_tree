@@ -1,0 +1,18 @@
+[Anjuta]
+Maximized=1
+Geometry=1920x1000+0+41
+
+[Execution]
+Program uri=../../tree
+Run in terminal=2
+Working directories=../../.
+
+[File Loader]
+Files=../../binary_tree.c#106%%%../../binary_tree.h#17%%%../../Makefile#5%%%../../tree.c#27
+
+[Document Manager]
+bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
+
+[Debugger]
+Breakpoint=1:../../tree.c:22:0:
+Stop at beginning=2
