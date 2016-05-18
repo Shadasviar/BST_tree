@@ -6,7 +6,7 @@
 
 
 int print_node_value(node*);
-void write_tree_to_array(node*, double[], int*);
+void write_tree_to_array(node*, type_name[], int*);
 
 
 /*
@@ -14,9 +14,9 @@ void write_tree_to_array(node*, double[], int*);
  -----------------------------------------------------------------------------*/
 
 
-node* create_node(double value){
+node* create_node(type_name value){
 
-  node *result =(node*)malloc(sizeof(node));
+  node *result =(node*)malloc(sizeof(*result));
   for(int i = 0; i < last; ++i){
 		result->family[i] = NULL;
 	}
@@ -28,7 +28,7 @@ node* create_node(double value){
 }
 
 
-int add_node(node *in_node, node_name name, double value){
+int add_node(node *in_node, node_name name, type_name value){
 
   if(name < parent && in_node){
     in_node->family[name] = create_node(value);
@@ -42,7 +42,7 @@ int add_node(node *in_node, node_name name, double value){
 }
 
 
-int set_value(node *in_node, double value){
+int set_value(node *in_node, type_name value){
 
   if(in_node){
     in_node->value = value;
@@ -54,13 +54,14 @@ int set_value(node *in_node, double value){
 }
 
 
-double get_value(node *in_node){
-  return in_node ? in_node->value : NAN;
+type_name get_value(node *in_node){
+  return in_node ? in_node->value : NULL;
 }
 
 
+/*TODO: remade deletion of element even with children case*/
 int delete_node(node *in_node){
-  if(in_node->family[parent] && in_node && num_of_children(in_node) == 0){
+  if(in_node && in_node->family[parent] && num_of_children(in_node) == 0){
     in_node->family[parent]->family[in_node->role] = NULL;
     free(in_node);
 		in_node = NULL;
@@ -107,23 +108,23 @@ void print_values_in_deep(node *in_node){
 }
 
 
-int add_leaf_in_BST_order(node *in_node, double value){
+int add_leaf_in_BST_order(node *in_node, type_name value){
 
   if(in_node){
 
-    if(value > in_node->value){
-      if(!in_node->family[right_child]){
-        add_node(in_node, right_child, value);
+    if(value < in_node->value){
+      if(! in_node->family[left_child]){
+        add_node(in_node, left_child, value);
         return true;
       }
-      else add_leaf_in_BST_order(in_node->family[right_child], value);
+      else add_leaf_in_BST_order(in_node->family[left_child], value);
     }
     else{
-    	if(!in_node->family[left_child]){
-      	add_node(in_node, left_child, value);
+    	if(!in_node->family[right_child]){
+      	add_node(in_node, right_child, value);
         return true;
       }
-    	else add_leaf_in_BST_order(in_node->family[left_child], value);
+    	else add_leaf_in_BST_order(in_node->family[right_child], value);
     }
 
   }
@@ -174,9 +175,9 @@ void delete_recursive(node *in_node){
 }
 
 
-int sort_array_by_tree(double array[], int size){
+int sort_array_by_tree(type_name array[], int size){
 	
-	node *head = (size > 0) ? create_node(array[0]) : NULL;
+	node *head = ((size > 0) ? create_node(array[0]) : NULL);
 	for(int i = 1; i < size; ++i){
   	add_leaf_in_BST_order(head, array[i]);
   }
@@ -200,10 +201,9 @@ int print_node_value(node *in_node){
 }
 
 
-void write_tree_to_array(node *in_node, double array[], int *i_current){
+void write_tree_to_array(node *in_node, type_name array[], int *i_current){
 	if(in_node && num_of_children(in_node) == 0){
-    array[*i_current] = get_value(in_node);
-		++(*i_current);
+    array[(*i_current)++] = get_value(in_node);
   }
 
   else
@@ -211,8 +211,7 @@ void write_tree_to_array(node *in_node, double array[], int *i_current){
     if(in_node->family[left_child]){
 			write_tree_to_array(in_node->family[left_child], array, i_current);
 		}
-    array[*i_current] = get_value(in_node);
-		++(*i_current);
+    array[(*i_current)++] = get_value(in_node);
     if(in_node->family[right_child]){
 			write_tree_to_array(in_node->family[right_child], array, i_current);
 		}

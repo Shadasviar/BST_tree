@@ -15,8 +15,8 @@ int main(){
     scanf("%d", &size);
     double array1[size], array2[size];
 
-	init_array_by_rand(array1, size, 0, 20);
-	init_array_by_rand(array2, size, 0, 20);
+	init_array_by_rand(array1, size, 0, 5);
+	init_array_by_rand(array2, size, 0, 10);
 
 	print_array(array1, size);
 	print_array(array2, size);
