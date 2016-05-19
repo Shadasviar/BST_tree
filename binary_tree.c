@@ -42,7 +42,7 @@ node* create_node(type_name value){
   node *result =(node*)malloc(sizeof(*result));
   for(int i = 0; i < last; ++i){
     result->family[i] = NULL;
-	}
+  }
 
   result->value = value;
   result->role = parent;
@@ -57,11 +57,11 @@ int add_node(node *in_node, node_name name, type_name value){
     in_node->family[name] = create_node(value);
     in_node->family[name]->family[parent] = in_node;
     in_node->family[name]->role = name;
-  	return true;
+    return true;
   }
   else ;
 
-	return false;
+  return false;
 }
 
 
@@ -73,7 +73,7 @@ int set_value(node *in_node, type_name value){
   }
   else ;
 	
-	return false;
+  return false;
 }
 
 
@@ -114,11 +114,11 @@ void print_values_in_deep(node *in_node){
   if(in_node){
     if(in_node->family[left_child]){
       print_values_in_deep(in_node->family[left_child]);
-	}
+    }
     print_node_value(in_node);
     if(in_node->family[right_child]){
       print_values_in_deep(in_node->family[right_child]);
-	}
+    }
   }
 
   else ;
@@ -188,7 +188,7 @@ void delete_recursive(node *in_node){
       delete_recursive(in_node);
   }
 
-	else ;
+  else ;
 }
 
 
@@ -253,7 +253,7 @@ void write_tree_to_array(node *in_node, type_name array[], int *i_current){
     }
   }
 
-	else ;
+  else ;
 }
 
 
