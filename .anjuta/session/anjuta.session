@@ -2,19 +2,19 @@
 Maximized=1
 Geometry=1920x1002+0+41
 
+[File Loader]
+Files=../../binary_tree.c#258%%%../../binary_tree.h#17%%%../../Makefile#5%%%../../tree.c#36
+
+[Document Manager]
+bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
+
 [Execution]
 Program uri=../../tree
 Run in terminal=2
 Working directories=../../.
 
-[File Loader]
-Files=../../binary_tree.c#73%%%../../binary_tree.h#17%%%../../Makefile#5%%%../../tree.c#29
-
-[Document Manager]
-bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
-
 [Debugger]
-Breakpoint=1:../../binary_tree.c:67:0:
+Breakpoint=1:../../tree.c:35:0:
 Stop at beginning=2
 
 [Build]

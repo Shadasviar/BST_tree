@@ -11,6 +11,7 @@ void write_tree_to_array(node*, type_name[], int*);
 int is_less(type_name, type_name);
 node* most_left(node*);
 node* most_right(node*);
+node* delete_node(node*);
 
 /*
  *Start of realization of the interface
@@ -62,51 +63,10 @@ type_name get_value(node *in_node){
 }
 
 
-/*TODO: remade deletion of element even with children case*/
-node* delete_node(node *in_node, type_name value){
-  if(! in_node) return NULL;
-
-  if(is_less(value, in_node->value))
-    return delete_node(in_node->family[left_child], value);
-  
-  else if(is_less(in_node->value, value))
-    return delete_node(in_node->family[right_child], value);
-  
-  else{
-      
-    if( ! (in_node->family[left_child] || in_node->family[right_child] )){
-      if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = NULL;
-      free(in_node);
-      in_node = NULL;
-      return NULL;
-    }
-    else{
-      node *tmp = NULL;
-      
-      if(in_node->family[right_child] && in_node->family[left_child]){
-        tmp = most_left(in_node->family[right_child]);
-        node *newnode = create_node(tmp->value);
-        if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = newnode;
-        memcpy(newnode->family, in_node->family, sizeof(*(newnode->family))*last);
-        newnode->family[right_child] = delete_node(in_node->family[right_child], tmp->value);
-        free(in_node);
-        in_node = NULL;
-        return newnode;
-      }
-      else{
-        int child = 0;
-        while( ! in_node->family[child]) ++child;
-        tmp = in_node->family[child];
-        if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = tmp;
-        tmp->family[parent] = in_node->family[parent];
-        tmp->role = in_node->role;
-        free(in_node);
-        in_node = NULL;
-        return tmp;
-      }
-      
-    }
-  }
+node* delete_node_by_key(node *in_node, type_name value){
+  node* res = find(in_node, value);
+  if( ! res) return in_node;
+  return delete_node(res);
 }
 
 
@@ -225,6 +185,20 @@ int sort_array_by_tree(type_name array[], int size){
 }
 
 
+node* get_head(node *in_node){
+  if(in_node->family[parent]) return get_head(in_node->family[parent]);
+  return in_node;
+}
+
+
+node* find(node *in_node, type_name val){
+  if( ! in_node) return NULL;
+  if(is_less(val, in_node->value)) return find(in_node->family[left_child], val);
+  else if(is_less(in_node->value, val)) return find(in_node->family[right_child], val);
+  else return in_node;
+}
+
+
 /*
  * End of realization of the interface
  -----------------------------------------------------------------------------*/
@@ -274,4 +248,45 @@ node* most_right(node *in_node){
     return most_right(in_node->family[right_child]);
   }
   return in_node;
+}
+
+
+node* delete_node(node *in_node){
+  if(! in_node) return NULL;
+  else{
+      
+    if( ! (in_node->family[left_child] || in_node->family[right_child] )){
+      if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = NULL;
+      free(in_node);
+      in_node = NULL;
+      return NULL;
+    }
+    else{
+      node *tmp = NULL;
+      
+      if(in_node->family[right_child] && in_node->family[left_child]){
+        tmp = most_left(in_node->family[right_child]);
+        node *newnode = create_node(tmp->value);
+        if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = newnode;
+        memcpy(newnode->family, in_node->family, sizeof(*(newnode->family))*last);
+        newnode->role = in_node->role;
+        newnode->family[right_child] = delete_node_by_key(in_node->family[right_child], tmp->value);      
+        free(in_node);
+        in_node = NULL;
+        return newnode;
+      }
+      else{
+        int child = 0;
+        while( ! in_node->family[child]) ++child;
+        tmp = in_node->family[child];
+        if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = tmp;
+        tmp->family[parent] = in_node->family[parent];
+        tmp->role = in_node->role;
+        free(in_node);
+        in_node = NULL;
+        return tmp;
+      }
+      
+    }
+  }
 }

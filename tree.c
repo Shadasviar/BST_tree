@@ -14,7 +14,7 @@ int main(){
     puts("Enter size of array");
     scanf("%d", &size);
     double array2[size];
-    double array1[] = {4,2,1,8,5,4,9,7,10};
+    double array1[] = {1,4,2,5,1,3};
 	//init_array_by_rand(array1, size, 0, 5);
 	init_array_by_rand(array2, size, 0, 10);
 
@@ -26,8 +26,15 @@ int main(){
     add_leaf_in_BST_order(head, array1[i]);
   }
   print_values_in_deep(head);
-  head = delete_node(head, 8);
+
+  delete_node_by_key(head, 1);
   puts("");
+  head = get_head(++head);
+  print_values_in_deep(head);
+
+  delete_node_by_key(head, 3);
+  puts("");
+  head = get_head(head);
   print_values_in_deep(head);
 
 	start = clock();
