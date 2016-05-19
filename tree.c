@@ -32,8 +32,8 @@ int main(){
     puts("Enter size of array");
     scanf("%d", &size);
     double array2[size];
-    double array1[] = {1,4,2,5,1,3};
-	//init_array_by_rand(array1, size, 0, 5);
+    double array1[size];
+	init_array_by_rand(array1, size, 0, 5);
 	init_array_by_rand(array2, size, 0, 10);
 
 	print_array(array1, size);

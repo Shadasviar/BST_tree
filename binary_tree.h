@@ -23,8 +23,8 @@ typedef double type_name;
 typedef enum {left_child, right_child, parent, last} node_name;
 
 typedef struct node{
-	struct node *family[last];
-	type_name value;
+  struct node *family[last];
+  type_name value;
   node_name role;  //role of this node for its parent (e.g. right_child)
 } node;
 

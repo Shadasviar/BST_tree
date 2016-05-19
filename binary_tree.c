@@ -41,13 +41,13 @@ node* create_node(type_name value){
 
   node *result =(node*)malloc(sizeof(*result));
   for(int i = 0; i < last; ++i){
-		result->family[i] = NULL;
+    result->family[i] = NULL;
 	}
 
-	result->value = value;
+  result->value = value;
   result->role = parent;
 
-	return result;
+  return result;
 }
 
 
@@ -85,6 +85,8 @@ type_name get_value(node *in_node){
 node* delete_node_by_key(node **in_node, type_name value){
   node* res = find(*in_node, value);
   if( ! res) return *in_node;
+  
+  /*Changes head for new if it is removed*/
   if(res == get_head(*in_node)){
     *in_node = delete_node(res);
     return *in_node;
@@ -104,23 +106,22 @@ int num_of_children(node *in_node){
 
 void print_values_in_deep(node *in_node){
 
-	if(in_node && num_of_children(in_node) == 0){
+  if(in_node && num_of_children(in_node) == 0){
     print_node_value(in_node);
   }
 
   else
-	if(in_node){
+  if(in_node){
     if(in_node->family[left_child]){
-			print_values_in_deep(in_node->family[left_child]);
-		}
+      print_values_in_deep(in_node->family[left_child]);
+	}
     print_node_value(in_node);
     if(in_node->family[right_child]){
-			print_values_in_deep(in_node->family[right_child]);
-		}
+      print_values_in_deep(in_node->family[right_child]);
+	}
   }
 
-	else ;
-
+  else ;
 }
 
 
@@ -136,56 +137,55 @@ int add_leaf_in_BST_order(node *in_node, type_name value){
       else add_leaf_in_BST_order(in_node->family[left_child], value);
     }
     else{
-    	if(!in_node->family[right_child]){
-      	add_node(in_node, right_child, value);
-        return true;
+      if(!in_node->family[right_child]){
+      add_node(in_node, right_child, value);
+      return true;
       }
-    	else add_leaf_in_BST_order(in_node->family[right_child], value);
+      else add_leaf_in_BST_order(in_node->family[right_child], value);
     }
 
   }
 
-	return false;
+  return false;
 }
 
 
 int num_of_leafs(node *in_node){
-	int result = 0;
+  int result = 0;
 
-	if(in_node && num_of_children(in_node) == 0) ++result;
+  if(in_node && num_of_children(in_node) == 0) ++result;
   else
-	if(in_node){
+  if(in_node){
     if(in_node->family[left_child]){
-			result += num_of_leafs(in_node->family[left_child]);
-		}
+      result += num_of_leafs(in_node->family[left_child]);
+    }
     if(in_node->family[right_child]){
-			result += num_of_leafs(in_node->family[right_child]);
-		}
+      result += num_of_leafs(in_node->family[right_child]);
+    }
   }
 
-	else ;
+  else ;
 
-	return result;
-
+  return result;
 }
 
 
 void delete_recursive(node *in_node){
 	
-	if(in_node && num_of_children(in_node) == 0){
+  if(in_node && num_of_children(in_node) == 0){
     if(in_node->family[parent]) in_node->family[parent]->family[in_node->role] = NULL;
     free(in_node);
   }
 
   else
-	if(in_node){
+  if(in_node){
     if(in_node->family[left_child]){
-			delete_recursive(in_node->family[left_child]);
-		}
+      delete_recursive(in_node->family[left_child]);
+    }
     if(in_node->family[right_child]){
-			delete_recursive(in_node->family[right_child]);
-		}
-		delete_recursive(in_node);
+      delete_recursive(in_node->family[right_child]);
+    }
+      delete_recursive(in_node);
   }
 
 	else ;
@@ -194,20 +194,21 @@ void delete_recursive(node *in_node){
 
 int sort_array_by_tree(type_name array[], int size){
 	
-	node *head = ((size > 0) ? create_node(array[0]) : NULL);
-	for(int i = 1; i < size; ++i){
-  	add_leaf_in_BST_order(head, array[i]);
+  node *head = ((size > 0) ? create_node(array[0]) : NULL);
+  for(int i = 1; i < size; ++i){
+    add_leaf_in_BST_order(head, array[i]);
   }
 
-	int index = 0;
-	write_tree_to_array(head, array, &index);
+  int index = 0;
+  write_tree_to_array(head, array, &index);
 
-	delete_recursive(head);
-	return true;
+  delete_recursive(head);
+  return true;
 	
 }
 
 
+/*Gets head of whole tree by any node of it*/
 node* get_head(node *in_node){
   if(in_node->family[parent]) return get_head(in_node->family[parent]);
   return in_node;
@@ -237,19 +238,19 @@ int print_node_value(node *in_node){
 
 
 void write_tree_to_array(node *in_node, type_name array[], int *i_current){
-	if(in_node && num_of_children(in_node) == 0){
+  if(in_node && num_of_children(in_node) == 0){
     array[(*i_current)++] = get_value(in_node);
   }
 
   else
-	if(in_node){
+  if(in_node){
     if(in_node->family[left_child]){
-			write_tree_to_array(in_node->family[left_child], array, i_current);
-		}
+      write_tree_to_array(in_node->family[left_child], array, i_current);
+    }
     array[(*i_current)++] = get_value(in_node);
     if(in_node->family[right_child]){
-			write_tree_to_array(in_node->family[right_child], array, i_current);
-		}
+      write_tree_to_array(in_node->family[right_child], array, i_current);
+    }
   }
 
 	else ;
@@ -268,7 +269,8 @@ node* most_left(node *in_node){
 node* delete_node(node *in_node){
   if(! in_node) return NULL;
   else{
-      
+
+    /*Delete leaf*/
     if(is_leaf(in_node)){
       if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = NULL;
       free(in_node);
@@ -277,8 +279,10 @@ node* delete_node(node *in_node){
     }
     else{
       node *tmp = NULL;
-      
+
+      /*Delete node wich has two children*/
       if(in_node->family[right_child] && in_node->family[left_child]){
+        
         tmp = most_left(in_node->family[right_child]);
         node *newnode = create_node(tmp->value);
         if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = newnode;
@@ -288,7 +292,10 @@ node* delete_node(node *in_node){
         free(in_node);
         in_node = NULL;
         return newnode;
+				
       }
+			
+      /*Delete node wich has one child*/
       else{
         int child = 0;
         while( ! in_node->family[child]) ++child;
