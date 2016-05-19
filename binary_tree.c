@@ -3,11 +3,14 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
 
 int print_node_value(node*);
 void write_tree_to_array(node*, type_name[], int*);
-
+int is_less(type_name, type_name);
+node* most_left(node*);
+node* most_right(node*);
 
 /*
  *Start of realization of the interface
@@ -55,25 +58,55 @@ int set_value(node *in_node, type_name value){
 
 
 type_name get_value(node *in_node){
-  return in_node ? in_node->value : NULL;
+  return in_node ? in_node->value : (type_name)0;
 }
 
 
 /*TODO: remade deletion of element even with children case*/
-int delete_node(node *in_node){
-  if(in_node && in_node->family[parent] && num_of_children(in_node) == 0){
-    in_node->family[parent]->family[in_node->role] = NULL;
-    free(in_node);
-		in_node = NULL;
-    return true;
+node* delete_node(node *in_node, type_name value){
+  if(! in_node) return NULL;
+
+  if(is_less(value, in_node->value))
+    return delete_node(in_node->family[left_child], value);
+  
+  else if(is_less(in_node->value, value))
+    return delete_node(in_node->family[right_child], value);
+  
+  else{
+      
+    if( ! (in_node->family[left_child] || in_node->family[right_child] )){
+      if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = NULL;
+      free(in_node);
+      in_node = NULL;
+      return NULL;
+    }
+    else{
+      node *tmp = NULL;
+      
+      if(in_node->family[right_child] && in_node->family[left_child]){
+        tmp = most_left(in_node->family[right_child]);
+        node *newnode = create_node(tmp->value);
+        if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = newnode;
+        memcpy(newnode->family, in_node->family, sizeof(*(newnode->family))*last);
+        newnode->family[right_child] = delete_node(in_node->family[right_child], tmp->value);
+        free(in_node);
+        in_node = NULL;
+        return newnode;
+      }
+      else{
+        int child = 0;
+        while( ! in_node->family[child]) ++child;
+        tmp = in_node->family[child];
+        if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = tmp;
+        tmp->family[parent] = in_node->family[parent];
+        tmp->role = in_node->role;
+        free(in_node);
+        in_node = NULL;
+        return tmp;
+      }
+      
+    }
   }
-  else
-	if(in_node && num_of_children(in_node) == 0){
-		free(in_node);
-		in_node = NULL;
-		return true;
-	}
-	return false;
 }
 
 
@@ -112,7 +145,7 @@ int add_leaf_in_BST_order(node *in_node, type_name value){
 
   if(in_node){
 
-    if(value < in_node->value){
+    if(is_less(value, in_node->value)){
       if(! in_node->family[left_child]){
         add_node(in_node, left_child, value);
         return true;
@@ -157,7 +190,8 @@ int num_of_leafs(node *in_node){
 void delete_recursive(node *in_node){
 	
 	if(in_node && num_of_children(in_node) == 0){
-    delete_node(in_node);
+    if(in_node->family[parent]) in_node->family[parent]->family[in_node->role] = NULL;
+    free(in_node);
   }
 
   else
@@ -195,6 +229,10 @@ int sort_array_by_tree(type_name array[], int size){
  * End of realization of the interface
  -----------------------------------------------------------------------------*/
 
+int is_less(type_name a, type_name b){
+  return a < b;
+}
+
 
 int print_node_value(node *in_node){
   return printf("%.2lf \n", get_value(in_node));
@@ -218,4 +256,22 @@ void write_tree_to_array(node *in_node, type_name array[], int *i_current){
   }
 
 	else ;
+}
+
+
+node* most_left(node *in_node){
+  if( ! in_node) return NULL;
+  if(in_node->family[left_child]){
+    return most_left(in_node->family[left_child]);
+  }
+  return in_node;
+}
+
+
+node* most_right(node *in_node){
+  if( ! in_node) return NULL;
+  if(in_node->family[right_child]){
+    return most_right(in_node->family[right_child]);
+  }
+  return in_node;
 }

@@ -14,7 +14,7 @@ node* create_node(type_name);
 
 int add_node(node*, node_name, type_name value);
 int set_value(node*, type_name value);
-int delete_node(node*);
+node* delete_node(node*, type_name);
 void delete_recursive(node*);
 type_name get_value(node*);
 int num_of_children(node*);

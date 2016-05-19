@@ -13,13 +13,22 @@ int main(){
     int size;
     puts("Enter size of array");
     scanf("%d", &size);
-    double array1[size], array2[size];
-
-	init_array_by_rand(array1, size, 0, 5);
+    double array2[size];
+    double array1[] = {4,2,1,8,5,4,9,7,10};
+	//init_array_by_rand(array1, size, 0, 5);
 	init_array_by_rand(array2, size, 0, 10);
 
 	print_array(array1, size);
 	print_array(array2, size);
+
+  node *head = create_node(array1[0]);
+  for(int i = 1; i < size; ++i){
+    add_leaf_in_BST_order(head, array1[i]);
+  }
+  print_values_in_deep(head);
+  head = delete_node(head, 8);
+  puts("");
+  print_values_in_deep(head);
 
 	start = clock();
     sort_array_by_tree(array1, size);
@@ -27,12 +36,12 @@ int main(){
 	printf("time 1 is: %f\n", (float)(stop-start)/CLOCKS_PER_SEC);
 
 	start = clock();
-    sort_array_by_tree(array2, size);
+    bubbleSortTable(array2, size);
 	stop = clock();
 	printf("time 2 is: %f\n", (float)(stop-start)/CLOCKS_PER_SEC);
 
-	//print_array(array1, size);
-	//print_array(array2, size);
+	print_array(array1, size);
+	print_array(array2, size);
 
 	return 0;
 }

@@ -1,23 +1,21 @@
 [Anjuta]
 Maximized=1
-Geometry=1920x1000+0+41
-
-[File Loader]
-Files=../../binary_tree.c#179%%%../../binary_tree.h#11%%%../../Makefile#5%%%../../tree.c#4
-
-[Document Manager]
-bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
+Geometry=1920x1002+0+41
 
 [Execution]
 Program uri=../../tree
 Run in terminal=2
 Working directories=../../.
 
-[Debugger]
-Stop at beginning=2
+[File Loader]
+Files=../../binary_tree.c#73%%%../../binary_tree.h#17%%%../../Makefile#5%%%../../tree.c#29
 
-[Project Manager]
-Expand=Tree%%%Tree//Tree
+[Document Manager]
+bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
+
+[Debugger]
+Breakpoint=1:../../binary_tree.c:67:0:
+Stop at beginning=2
 
 [Build]
 Configuration list=1:Default:%%%1:Debug:Debug%%%1:Profiling:Profiling%%%1:Optimized:Optimized
