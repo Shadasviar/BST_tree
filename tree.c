@@ -27,14 +27,12 @@ int main(){
   }
   print_values_in_deep(head);
 
-  delete_node_by_key(head, 1);
+  delete_node_by_key(&head, 1);
   puts("");
-  head = get_head(++head);
   print_values_in_deep(head);
 
-  delete_node_by_key(head, 3);
+  delete_node_by_key(&head, 3);
   puts("");
-  head = get_head(head);
   print_values_in_deep(head);
 
 	start = clock();

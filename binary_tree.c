@@ -10,8 +10,8 @@ int print_node_value(node*);
 void write_tree_to_array(node*, type_name[], int*);
 int is_less(type_name, type_name);
 node* most_left(node*);
-node* most_right(node*);
 node* delete_node(node*);
+int is_leaf(node*);
 
 /*
  *Start of realization of the interface
@@ -63,9 +63,13 @@ type_name get_value(node *in_node){
 }
 
 
-node* delete_node_by_key(node *in_node, type_name value){
-  node* res = find(in_node, value);
-  if( ! res) return in_node;
+node* delete_node_by_key(node **in_node, type_name value){
+  node* res = find(*in_node, value);
+  if( ! res) return *in_node;
+  if(res == get_head(*in_node)){
+    *in_node = delete_node(res);
+    return *in_node;
+  }
   return delete_node(res);
 }
 
@@ -242,20 +246,11 @@ node* most_left(node *in_node){
 }
 
 
-node* most_right(node *in_node){
-  if( ! in_node) return NULL;
-  if(in_node->family[right_child]){
-    return most_right(in_node->family[right_child]);
-  }
-  return in_node;
-}
-
-
 node* delete_node(node *in_node){
   if(! in_node) return NULL;
   else{
       
-    if( ! (in_node->family[left_child] || in_node->family[right_child] )){
+    if(is_leaf(in_node)){
       if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = NULL;
       free(in_node);
       in_node = NULL;
@@ -270,7 +265,7 @@ node* delete_node(node *in_node){
         if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = newnode;
         memcpy(newnode->family, in_node->family, sizeof(*(newnode->family))*last);
         newnode->role = in_node->role;
-        newnode->family[right_child] = delete_node_by_key(in_node->family[right_child], tmp->value);      
+        newnode->family[right_child] = delete_node_by_key(&in_node->family[right_child], tmp->value);      
         free(in_node);
         in_node = NULL;
         return newnode;
@@ -289,4 +284,9 @@ node* delete_node(node *in_node){
       
     }
   }
+}
+
+
+int is_leaf(node *in_node){
+  return ( ! (in_node->family[left_child] || in_node->family[right_child]));
 }
