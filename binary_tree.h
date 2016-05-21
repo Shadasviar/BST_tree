@@ -2,6 +2,8 @@
  * binary_tree.h
  * Copyright (C) Uladzislau Harbuz 2016 
  * 
+ * This file is part of BST_tree.
+ *  
  * BST_tree is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
@@ -17,9 +19,10 @@
  */
 
 #pragma once
+#include "fractions.h"
 
 
-typedef double type_name;
+typedef fraction type_name;
 typedef enum {left_child, right_child, parent, last} node_name;
 
 typedef struct node{

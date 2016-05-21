@@ -3,6 +3,8 @@
  * binary_tree.c
  * Copyright (C) Uladzislau Harbuz 2016 
  * 
+ * This file is part of BST_tree.
+ * 
  * BST_tree is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
@@ -78,7 +80,7 @@ int set_value(node *in_node, type_name value){
 
 
 type_name get_value(node *in_node){
-  return in_node ? in_node->value : (type_name)0;
+  return in_node ? in_node->value : make_fraction(0,1);
 }
 
 
@@ -228,12 +230,13 @@ node* find(node *in_node, type_name val){
  -----------------------------------------------------------------------------*/
 
 int is_less(type_name a, type_name b){
-  return a < b;
+  return fraction_to_double(a) < fraction_to_double(b);
 }
 
 
 int print_node_value(node *in_node){
-  return printf("%.2lf \n", get_value(in_node));
+  fr_print(in_node->value);
+	return true;
 }
 
 
@@ -288,6 +291,8 @@ node* delete_node(node *in_node){
         if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = newnode;
         memcpy(newnode->family, in_node->family, sizeof(*(newnode->family))*last);
         newnode->role = in_node->role;
+				newnode->family[left_child]->family[parent] = newnode;
+				newnode->family[right_child]->family[parent] = newnode;
         newnode->family[right_child] = delete_node_by_key(&in_node->family[right_child], tmp->value);      
         free(in_node);
         in_node = NULL;
