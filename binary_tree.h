@@ -20,6 +20,7 @@
 
 #pragma once
 #include "fractions.h"
+#include <stdio.h>
 
 
 typedef fraction type_name;
@@ -46,4 +47,7 @@ int num_of_leafs(node*);
 int sort_array_by_tree(type_name[], int);
 
 void print_values_in_deep(node*);
+
+void write_to_file(FILE *filename, node*);
+node* read_file(FILE*);
 

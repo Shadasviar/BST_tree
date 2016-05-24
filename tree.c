@@ -61,14 +61,19 @@ int main(){
     sort_array_by_tree(array1, size);
 	stop = clock();
 	printf("time 1 is: %f\n", (float)(stop-start)/CLOCKS_PER_SEC);
-/*
-	start = clock();
-    bubbleSortTable(array2, size);
-	stop = clock();
-	printf("time 2 is: %f\n", (float)(stop-start)/CLOCKS_PER_SEC);
-*/
+
+  FILE *file = fopen("fdf", "w");
+  write_to_file(file, head);
+  fclose(file);
+  
 	print_array(array1, size);
 	print_array(array2, size);
+
+  file = fopen("gg", "r");
+  node *n = read_file(file);
+  fclose(file);
+
+  print_values_in_deep(n);
 
 	return 0;
 }
@@ -90,24 +95,3 @@ void init_array_by_rand(type_name array[], int size, int down, int up){
 	}
 }
 
-/*
-void bubbleSortTable(type_name t[], int s){
-  int i, j, tmp;
-  int trzeba = 1;
-
- // for(i = 0; i < s-1; i++){
- i = 0;
- while(trzeba){
-    trzeba = 0;
-    for(j = 0; j < s-1-i; j++){
-      if(t[j] > t[j+1]){
-        trzeba = 1;
-        tmp = t[j];
-        t[j] = t[j+1];
-        t[j+1] = tmp;
-      }
-    }
-    i++;
-  }
-}
-*/

@@ -22,7 +22,6 @@
 #include "binary_tree.h"
 #include <stdlib.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <math.h>
 #include <string.h>
 
@@ -222,6 +221,38 @@ node* find(node *in_node, type_name val){
   if(is_less(val, in_node->value)) return find(in_node->family[left_child], val);
   else if(is_less(in_node->value, val)) return find(in_node->family[right_child], val);
   else return in_node;
+}
+
+
+void write_to_file(FILE *file, node *in_node){
+	
+	if(in_node && num_of_children(in_node) == 0){
+    fprintf(file, "%d %d\n", in_node->value.numerator, in_node->value.denominator);
+  }
+
+  else
+  if(in_node){
+    if(in_node->family[left_child]){
+      write_to_file(file, in_node->family[left_child]);
+    }
+     fprintf(file, "%d %d\n", in_node->value.numerator, in_node->value.denominator);
+    if(in_node->family[right_child]){
+      write_to_file(file, in_node->family[right_child]);
+    }
+  }
+}
+
+
+node* read_file(FILE *file){
+	t_type a, b;
+	fscanf(file, "%d %d\n", &a, &b);
+	fraction tmp = make_fraction(a, b);
+	node *result = create_node(tmp);
+	while(2 == fscanf(file, "%d %d\n", &a, &b)){
+		tmp = make_fraction(a, b);
+		add_leaf_in_BST_order(result, tmp);
+	}
+	return result;
 }
 
 
