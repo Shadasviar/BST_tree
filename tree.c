@@ -69,7 +69,7 @@ int main(){
 	print_array(array1, size);
 	print_array(array2, size);
 
-  file = fopen("gg", "r");
+  file = fopen("fdf"", "r");
   node *n = read_file(file);
   fclose(file);
 

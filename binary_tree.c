@@ -226,7 +226,7 @@ node* find(node *in_node, type_name val){
 
 void write_to_file(FILE *file, node *in_node){
 	
-	if(in_node && num_of_children(in_node) == 0){
+  if(in_node && num_of_children(in_node) == 0){
     fprintf(file, "%d %d\n", in_node->value.numerator, in_node->value.denominator);
   }
 
@@ -322,8 +322,8 @@ node* delete_node(node *in_node){
         if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = newnode;
         memcpy(newnode->family, in_node->family, sizeof(*(newnode->family))*last);
         newnode->role = in_node->role;
-				newnode->family[left_child]->family[parent] = newnode;
-				newnode->family[right_child]->family[parent] = newnode;
+        newnode->family[left_child]->family[parent] = newnode;
+        newnode->family[right_child]->family[parent] = newnode;
         newnode->family[right_child] = delete_node_by_key(&in_node->family[right_child], tmp->value);      
         free(in_node);
         in_node = NULL;
