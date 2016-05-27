@@ -36,10 +36,6 @@ int main(){
     type_name array2[size];
     type_name array1[size];
   
-  /*TODO: see what happens with it
-  {3/4 5/4 2/2 2/4 3/3 3/2 1/4 3/3 1/1 2/3 }
-   */ 
-
 	init_array_by_rand(array1, size, 1, 5);
 	init_array_by_rand(array2, size, 1, 10);
 
