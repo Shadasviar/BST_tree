@@ -46,10 +46,12 @@ int main(){
 	print_array(array1, size);
 	print_array(array2, size);
 
+  
   node *head = create_node(array1[0]);
   for(int i = 1; i < size; ++i){
     add_leaf_in_BST_order(head, array1[i]);
   }
+
   print_values_in_deep(head);
   puts("");
 
@@ -67,6 +69,7 @@ int main(){
 	stop = clock();
 	printf("time 1 is: %f\n", (float)(stop-start)/CLOCKS_PER_SEC);
 
+  /*
   FILE *file = fopen("fdf", "w");
   write_to_file(file, head);
   fclose(file);
@@ -77,8 +80,9 @@ int main(){
   file = fopen("fdf", "r");
   node *n = read_file(file);
   fclose(file);
+  */
 
-  print_values_in_deep(n);
+  //print_values_in_deep(n);
 
 	return 0;
 }

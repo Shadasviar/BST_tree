@@ -323,7 +323,8 @@ node* delete_node(node *in_node){
         newnode->role = in_node->role;
         newnode->family[left_child]->family[parent] = newnode;
         newnode->family[right_child]->family[parent] = newnode;
-        newnode->family[right_child] = delete_node_by_key(&in_node->family[right_child], tmp->value);      
+				delete_node_by_key(&newnode->family[right_child], tmp->value);
+        //newnode->family[right_child] = delete_node(tmp);      
         free(in_node);
         in_node = NULL;
         return newnode;
