@@ -31,7 +31,6 @@ void write_tree_to_array(node*, type_name[], int*);
 int is_less(type_name, type_name);
 node* most_left(node*);
 node* delete_node(node*);
-int is_leaf(node*);
 
 /*
  *Start of realization of the interface
@@ -305,7 +304,7 @@ node* delete_node(node *in_node){
   else{
 
     /*Delete leaf*/
-    if(is_leaf(in_node)){
+    if(num_of_children(in_node) == 0){
       if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = NULL;
       free(in_node);
       in_node = NULL;
@@ -346,9 +345,4 @@ node* delete_node(node *in_node){
       
     }
   }
-}
-
-
-int is_leaf(node *in_node){
-  return ( ! (in_node->family[left_child] || in_node->family[right_child]));
 }

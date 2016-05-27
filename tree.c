@@ -35,6 +35,11 @@ int main(){
     scanf("%d", &size);
     type_name array2[size];
     type_name array1[size];
+  
+  /*TODO: see what happens with it
+  {3/4 5/4 2/2 2/4 3/3 3/2 1/4 3/3 1/1 2/3 }
+   */ 
+
 	init_array_by_rand(array1, size, 1, 5);
 	init_array_by_rand(array2, size, 1, 10);
 
@@ -69,7 +74,7 @@ int main(){
 	print_array(array1, size);
 	print_array(array2, size);
 
-  file = fopen("fdf"", "r");
+  file = fopen("fdf", "r");
   node *n = read_file(file);
   fclose(file);
 
