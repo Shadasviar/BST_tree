@@ -27,7 +27,7 @@
 
 
 int print_node_value(node*);
-void write_tree_to_array(node*, type_name[], int*);
+void write_tree_to_array(node*, type_name[]);
 int is_less(type_name, type_name);
 node* most_left(node*);
 node* delete_node(node*);
@@ -199,8 +199,7 @@ int sort_array_by_tree(type_name array[], int size){
     add_leaf_in_BST_order(head, array[i]);
   }
 
-  int index = 0;
-  write_tree_to_array(head, array, &index);
+  write_tree_to_array(head, array);
 
   delete_recursive(head);
   return true;
@@ -270,19 +269,20 @@ int print_node_value(node *in_node){
 }
 
 
-void write_tree_to_array(node *in_node, type_name array[], int *i_current){
+void write_tree_to_array(node *in_node, type_name array[]){
+	static int i_current = 0;
   if(in_node && num_of_children(in_node) == 0){
-    array[(*i_current)++] = get_value(in_node);
+    array[i_current++] = get_value(in_node);
   }
 
   else
   if(in_node){
     if(in_node->family[left_child]){
-      write_tree_to_array(in_node->family[left_child], array, i_current);
+      write_tree_to_array(in_node->family[left_child], array);
     }
-    array[(*i_current)++] = get_value(in_node);
+    array[i_current++] = get_value(in_node);
     if(in_node->family[right_child]){
-      write_tree_to_array(in_node->family[right_child], array, i_current);
+      write_tree_to_array(in_node->family[right_child], array);
     }
   }
 

@@ -64,6 +64,7 @@ int main(){
     sort_array_by_tree(array1, size);
 	stop = clock();
 	printf("time 1 is: %f\n", (float)(stop-start)/CLOCKS_PER_SEC);
+  print_array(array1, size);
 
   /*
   FILE *file = fopen("fdf", "w");
