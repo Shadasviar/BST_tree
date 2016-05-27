@@ -129,7 +129,7 @@ int add_leaf_in_BST_order(node *in_node, type_name value){
 
   if(in_node){
 
-    if(is_less(value, in_node->value)){
+    if(is_less(value, get_value(in_node))){
       if(! in_node->family[left_child]){
         add_node(in_node, left_child, value);
         return true;
@@ -217,8 +217,8 @@ node* get_head(node *in_node){
 
 node* find(node *in_node, type_name val){
   if( ! in_node) return NULL;
-  if(is_less(val, in_node->value)) return find(in_node->family[left_child], val);
-  else if(is_less(in_node->value, val)) return find(in_node->family[right_child], val);
+  if(is_less(val, get_value(in_node))) return find(in_node->family[left_child], val);
+  else if(is_less(get_value(in_node), val)) return find(in_node->family[right_child], val);
   else return in_node;
 }
 
@@ -226,7 +226,7 @@ node* find(node *in_node, type_name val){
 void write_to_file(FILE *file, node *in_node){
 	
   if(in_node && num_of_children(in_node) == 0){
-    fprintf(file, "%d %d\n", in_node->value.numerator, in_node->value.denominator);
+    fprintf(file, "%d %d\n", get_value(in_node).numerator, get_value(in_node).denominator);
   }
 
   else
@@ -234,7 +234,7 @@ void write_to_file(FILE *file, node *in_node){
     if(in_node->family[left_child]){
       write_to_file(file, in_node->family[left_child]);
     }
-     fprintf(file, "%d %d\n", in_node->value.numerator, in_node->value.denominator);
+     fprintf(file, "%d %d\n", get_value(in_node).numerator, get_value(in_node).denominator);
     if(in_node->family[right_child]){
       write_to_file(file, in_node->family[right_child]);
     }
@@ -265,7 +265,7 @@ int is_less(type_name a, type_name b){
 
 
 int print_node_value(node *in_node){
-  fr_print(in_node->value);
+  fr_print(get_value(in_node));
 	return true;
 }
 
@@ -317,13 +317,13 @@ node* delete_node(node *in_node){
       if(in_node->family[right_child] && in_node->family[left_child]){
         
         tmp = most_left(in_node->family[right_child]);
-        node *newnode = create_node(tmp->value);
+        node *newnode = create_node(get_value(tmp));
         if(in_node->role < parent) in_node->family[parent]->family[in_node->role] = newnode;
         memcpy(newnode->family, in_node->family, sizeof(*(newnode->family))*last);
         newnode->role = in_node->role;
         newnode->family[left_child]->family[parent] = newnode;
         newnode->family[right_child]->family[parent] = newnode;
-        delete_node_by_key(&newnode->family[right_child], tmp->value);   
+        delete_node_by_key(&newnode->family[right_child], get_value(tmp));   
         free(in_node);
         in_node = NULL;
         return newnode;
