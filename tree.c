@@ -51,11 +51,11 @@ int main(){
   print_values_in_deep(head);
   puts("");
 
-  delete_node_by_key(&head, make_fraction(3,4));
+  delete_node_by_key(&head, set_complex(3,4));
   print_values_in_deep(head);
   puts("");
 
-  delete_node_by_key(&head, make_fraction(1,2));
+  delete_node_by_key(&head, set_complex(1,2));
   print_values_in_deep(head);
   puts("");
 
@@ -88,7 +88,7 @@ int main(){
 void print_array(type_name array[], int size){
 	printf("{");
 	for(int i = 0; i < size; ++i){
-		fr_print(array[i]);
+		print_complex(array[i]);
 	}
 	printf("}\n");
 }
@@ -97,7 +97,7 @@ void print_array(type_name array[], int size){
 void init_array_by_rand(type_name array[], int size, int down, int up){
 	srand((double)time(NULL));
 	for(int i = 0; i < size; ++i){
-		array[i] = make_fraction(((rand() % (up-down+1)) + down), ((rand() % (up-down+1)) + down));
+		array[i] = set_complex(((rand() % (up-down+1)) + down), ((rand() % (up-down+1)) + down));
 	}
 }
 

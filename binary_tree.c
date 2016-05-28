@@ -29,6 +29,7 @@
 int print_node_value(node*);
 void write_tree_to_array(node*, type_name[]);
 int is_less(type_name, type_name);
+int is_equal(type_name a, type_name b);
 node* most_left(node*);
 node* delete_node(node*);
 
@@ -78,7 +79,7 @@ int set_value(node *in_node, type_name value){
 
 
 type_name get_value(node *in_node){
-  return in_node ? in_node->value : make_fraction(0,1);
+  return in_node ? in_node->value : set_complex(0,0);
 }
 
 
@@ -217,15 +218,15 @@ node* get_head(node *in_node){
 node* find(node *in_node, type_name val){
   if( ! in_node) return NULL;
   if(is_less(val, get_value(in_node))) return find(in_node->family[left_child], val);
-  else if(is_less(get_value(in_node), val)) return find(in_node->family[right_child], val);
-  else return in_node;
+  else if (is_equal(get_value(in_node), val)) return in_node;
+  else return find(in_node->family[right_child], val);
 }
 
 
 void write_to_file(FILE *file, node *in_node){
 	
   if(in_node && num_of_children(in_node) == 0){
-    fprintf(file, "%d %d\n", get_value(in_node).numerator, get_value(in_node).denominator);
+    fprintf(file, "%.2f %.2f\n", get_value(in_node).a, get_value(in_node).b);
   }
 
   else
@@ -233,7 +234,7 @@ void write_to_file(FILE *file, node *in_node){
     if(in_node->family[left_child]){
       write_to_file(file, in_node->family[left_child]);
     }
-     fprintf(file, "%d %d\n", get_value(in_node).numerator, get_value(in_node).denominator);
+     fprintf(file, "%.2f %.2f\n", get_value(in_node).a, get_value(in_node).b);
     if(in_node->family[right_child]){
       write_to_file(file, in_node->family[right_child]);
     }
@@ -243,11 +244,11 @@ void write_to_file(FILE *file, node *in_node){
 
 node* read_file(FILE *file){
 	t_type a, b;
-	fscanf(file, "%d %d\n", &a, &b);
-	fraction tmp = make_fraction(a, b);
+	fscanf(file, "%f %f\n", &a, &b);
+	complex_t tmp = set_complex(a, b);
 	node *result = create_node(tmp);
-	while(2 == fscanf(file, "%d %d\n", &a, &b)){
-		tmp = make_fraction(a, b);
+	while(2 == fscanf(file, "%f %f\n", &a, &b)){
+		tmp = set_complex(a, b);
 		add_leaf_in_BST_order(result, tmp);
 	}
 	return result;
@@ -259,18 +260,23 @@ node* read_file(FILE *file){
  -----------------------------------------------------------------------------*/
 
 int is_less(type_name a, type_name b){
-  return fraction_to_double(a) < fraction_to_double(b);
+  return sqrt(a.a*a.a + a.b*a.b) < sqrt(b.a*b.a + b.b*b.b);
+}
+
+
+int is_equal(type_name a, type_name b){
+  return (a.a == b.a) && (b.b == a.b);
 }
 
 
 int print_node_value(node *in_node){
-  fr_print(get_value(in_node));
-	return true;
+  print_complex(get_value(in_node));
+  return true;
 }
 
 
 void write_tree_to_array(node *in_node, type_name array[]){
-	static int i_current = 0;
+  static int i_current = 0;
   if(in_node && num_of_children(in_node) == 0){
     array[i_current++] = get_value(in_node);
   }
