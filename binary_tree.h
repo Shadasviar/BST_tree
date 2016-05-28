@@ -19,11 +19,11 @@
  */
 
 #pragma once
-#include "fractions.h"
+#include "complex.h"
 #include <stdio.h>
 
 
-typedef fraction type_name;
+typedef complex_t type_name;
 typedef enum {left_child, right_child, parent, last} node_name;
 
 typedef struct node{

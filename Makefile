@@ -4,7 +4,7 @@
 CC = gcc
 CFLAGS = -g -Wall -std=c11
 OBJECTS = $(SOURCES:.c=.o)
-SOURCES = tree.c binary_tree.c fractions.c
+SOURCES = tree.c binary_tree.c fractions.c complex.c
 INCFLAGS = 
 LDFLAGS = -Wl,-rpath,/usr/local/lib, -lm
 LIBS = 
